@@ -16,11 +16,12 @@ import javax.transaction.Transactional;
 public class CoursesTest {
     @Autowired
     private EntityManager manager;
-@Test
-public void test_addCoursesTest(){
-Courses courses = new Courses();
-courses.setCourseName("JAVA");
-manager.persist(courses);
-log.debug("{}",courses.getUuid());
+
+    @Test
+    public void test_addCourses() {
+        Courses courses = new Courses();
+        courses.setCourseName("JAVA");
+        manager.persist(courses);
+        log.debug("{}", courses.getUuid());
     }
 }
