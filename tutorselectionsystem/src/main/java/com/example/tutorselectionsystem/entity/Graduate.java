@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,11 +14,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Graduate {
+    //学生类
     @Id
-    @GeneratedValue
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private int studentNumber;//学号
     private String name;//学生姓名
+
+    @Column(columnDefinition = "timestamp default current_timestamp",
+            insertable = false,
+            updatable = false)
+    private LocalDateTime insertTime;
+    @Column(columnDefinition = "timestamp default current_timestamp " +
+            "on update current_timestamp",
+            insertable = false,
+            updatable = false)
+    private LocalDateTime uodateTime;
 
     @ManyToOne
     private Tutor tutorname;//导师姓名

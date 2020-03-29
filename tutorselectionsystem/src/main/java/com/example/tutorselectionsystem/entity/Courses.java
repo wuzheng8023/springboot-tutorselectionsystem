@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,14 +13,24 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Courses {
+public class Courses {  //课程类  strategy = GenerationType.IDENTITY
+    //课程类
     @Id
-    @GeneratedValue
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String courseName;//课程名称
     private float weight;//权重
     private float floorGroad;//可以本课成绩最低分，由教师设定
     private int type;//课程类型，1是普通课程，0方向；
+    @Column(columnDefinition = "timestamp default current_timestamp",
+            insertable = false,
+            updatable = false)
+    private LocalDateTime insertTime;
+    @Column(columnDefinition = "timestamp default current_timestamp " +
+            "on update current_timestamp",
+            insertable = false,
+            updatable = false)
+    private LocalDateTime uodateTime;
 
     @OneToMany(mappedBy = "course")
     private List<Transcript> transcripts;

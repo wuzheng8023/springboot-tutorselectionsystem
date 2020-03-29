@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -15,11 +13,23 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transcript {
+    //成绩单类
     @Id
-    @GeneratedValue
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private float grade;//分数
 
+    @Column(columnDefinition = "timestamp default current_timestamp",
+            insertable = false,
+            updatable = false)
+    private LocalDateTime insertTime;
+    @Column(columnDefinition = "timestamp default current_timestamp " +
+            "on update current_timestamp",
+            insertable = false,
+            updatable = false)
+    private LocalDateTime uodateTime;
+
+    private LocalDateTime updateTime;//数据修改时间
     @ManyToOne
     private Graduate graduate;//学生类主键
     @ManyToOne

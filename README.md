@@ -37,6 +37,13 @@
  - Axios 0.19.2
 ---
 ### Development record
+
+#### Date and time:2020-03-29T22:14 feature/develop
+
+ - 完成JPA接口的继承以及测试使用；
+ - 主键进行修改：由原本的UUID改为int自增长,为方便后续测试使用；
+ - 完善了实体类的属性，添加了数据的插入时间属性以及修改时间属性，采用由数据库生成的策略；
+
 #### Date and time:2020-03-16T17:20 bugfix
 
 **Bug : java.lang.IllegalStateException: Failed to load ApplicationContext**
@@ -55,4 +62,3 @@
    ```
 **补充说明：**
 Spring加载配置文件路径修改：可以通过@ContextConfiguration修改实现,这是[相关文档](https://www.cnblogs.com/kinome/p/9628830.html) 。
- 

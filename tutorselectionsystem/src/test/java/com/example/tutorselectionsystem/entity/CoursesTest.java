@@ -22,6 +22,6 @@ public class CoursesTest {
         Courses courses = new Courses();
         courses.setCourseName("JAVA");
         manager.persist(courses);
-        log.debug("{}", courses.getUuid());
+        log.debug("{}", courses.getId());
     }
 }
