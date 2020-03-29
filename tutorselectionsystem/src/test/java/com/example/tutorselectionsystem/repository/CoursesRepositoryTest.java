@@ -15,14 +15,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Rollback(value = false)
 public class CoursesRepositoryTest {
     @Autowired
-   private CoursesRepository coursesRepository;
+    private CoursesRepository coursesRepository;
 
     @Test
     public void test_addCouses(){
         Courses courses = new Courses();
-        courses.setCourseName("高等数学");
-        courses.setType(1);
+        courses.setCourseName("JAVA开发");
+        courses.setType(2);
         coursesRepository.save(courses);
+//        coursesRepository.refresh(courses);
+    }
+
+    @Test
+    public void test_addCouses2(){
+        Courses courses = new Courses();
+        courses.setCourseName("离散数学");
+        courses.setType(2);
+        coursesRepository.save(courses);
+//        coursesRepository.refresh(courses);
+        log.debug("{}", courses.getCourseName());
+        log.debug("{}", courses.getId());
+        log.debug("{}", courses.getInsertTime());
     }
 
 
