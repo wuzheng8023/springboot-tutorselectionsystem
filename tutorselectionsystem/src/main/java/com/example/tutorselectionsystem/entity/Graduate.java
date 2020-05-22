@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
 
 @Entity
 @Data
@@ -17,9 +17,11 @@ public class Graduate {
     //学生类
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int studentNumber;//学号
+    private Integer id;
+    private Integer studentNumber;//学号
     private String name;//学生姓名
+    private Float overallScore;//依据各项成绩排序最终得到的综合成绩，用于排名使用
+    private Integer pwd;//学生密码，默认初始化为学号
 
     @Column(columnDefinition = "timestamp default current_timestamp",
             insertable = false,
@@ -29,14 +31,13 @@ public class Graduate {
             "on update current_timestamp",
             insertable = false,
             updatable = false)
-    private LocalDateTime uodateTime;
+    private LocalDateTime updateTime;
 
     @ManyToOne
     private Tutor tutorname;//导师姓名
 
     @OneToMany(mappedBy = "graduate")
     private List<Transcript> transcripts;//成绩表
-
 
 
 }

@@ -19,7 +19,7 @@ public class TranscriptRepositoryTest {
     @Test
     public void test_addTranscript(){
         Transcript transcript = new Transcript();
-        transcript.setGrade(12);
+        transcript.setGrade(Float.valueOf(12));
         transcriptRepository.save(transcript);
     }
 }

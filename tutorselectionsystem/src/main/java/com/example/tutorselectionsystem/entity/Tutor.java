@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
 
 @Entity
 @Data
@@ -17,11 +17,11 @@ public class Tutor {
     //导师类
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id ;
+    private Integer id ;
 
     private String name;
-    private int selectRange;//选择学生范围，例如前几名
-    private int numberOfStudentRequired;//需要多少学生
+    private Integer selectRange;//选择学生范围，例如前几名
+    private Integer numberOfStudentRequired;//需要多少学生
     private String pwd;//后台权限验证密码
 
     @Column(columnDefinition = "timestamp default current_timestamp",
@@ -32,7 +32,7 @@ public class Tutor {
             "on update current_timestamp",
             insertable = false,
             updatable = false)
-    private LocalDateTime uodateTime;
+    private LocalDateTime updateTime;
 
     @OneToMany(mappedBy = "tutorname")
     private List<Graduate> graduates;//已经拥有的学生

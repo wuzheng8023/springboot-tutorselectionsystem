@@ -19,9 +19,9 @@ public class TranscriptTest {
     EntityManager manager;
 
     @Test
-    public void test_addTranscript(){
+    public void test_addTranscript() {
         Transcript transcript = new Transcript();
-        transcript.setGrade(99);
+        transcript.setGrade(Float.valueOf(45));
         manager.persist(transcript);
     }
 
