@@ -18,53 +18,75 @@ public class CourseSerivce {
 
     /**
      * 依据课程名称查询课程
+     *
      * @param courseName
      * @return
      */
-    public List<Courses> getCoursesByName(String courseName){
+    public List<Courses> getCoursesByName(String courseName) {
         return coursesRepository.findByCourseName(courseName).orElse(List.of());
     }
 
     /**
      * 依据课程号查询课程
+     *
      * @param id
      * @return
      */
-    public Courses getCoursesId(Integer id){
+    public Courses getCoursesById(Integer id) {
         return coursesRepository.findCoursesById(id).orElse(null);
     }
 
     /**
      * 查找全部课程
+     *
      * @return
      */
-    public List<Courses> getAllCourses(){
+    public List<Courses> getAllCourses() {
         return coursesRepository.courseList().orElse(List.of());
     }
 
     /**
      * 修改课程
+     *
      * @param courses
      * @return
      */
-    public Courses updateCourses(Courses courses){
+    public Courses updateCourses(Courses courses) {
+        if (getCoursesById(courses.getId()) != null) {
 
-      return  coursesRepository.save(courses);
+            return coursesRepository.save(courses);
+        }
+        return null;
+    }
+
+    /**
+     * 添加课程
+     *
+     * @param courses
+     * @return
+     */
+    public Courses addCourses(Courses courses) {
+        if (getCoursesById(courses.getId()) != null) {
+            return coursesRepository.save(courses);
+        }
+        return null;
     }
 
     /**
      * 依据名字删除课程
+     *
      * @param cname
      */
-    public void deleteCoursesByName(String cname){
+    public void deleteCoursesByName(String cname) {
         coursesRepository.deleteCoursesByCourseName(cname);
     }
 
     /**
-     *依据id删除课程
+     * 依据id删除课程
+     *
      * @param id
      */
-    public void deleteCourseById(Integer id){
+    public void deleteCourseById(Integer id) {
         coursesRepository.deleteCoursesById(id);
     }
 }

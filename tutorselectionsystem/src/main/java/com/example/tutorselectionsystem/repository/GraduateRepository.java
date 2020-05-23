@@ -18,7 +18,7 @@ public interface GraduateRepository extends BaseRepository<Graduate, Integer> {
 
     //依据学号查询指定学生
     @Query("from Graduate g where g.id=:id ")
-    Optional<Graduate> findGraduateById(@Param("id") Integer id);
+    Optional<Graduate> findGraduateById(@Param("id") int id);
 
     //依据姓名查找学生
     @Query("from Graduate g where g.name=:name")

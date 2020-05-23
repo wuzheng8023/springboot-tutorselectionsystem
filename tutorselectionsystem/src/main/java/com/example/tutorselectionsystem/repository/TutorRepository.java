@@ -16,7 +16,7 @@ public interface TutorRepository extends BaseRepository<Tutor,Integer> {
     Optional<List<Tutor>> tutorList();
     //根据老师id查询老师
     @Query("from Tutor t where  t.id=:id")
-    Optional<Tutor> findById(@Param("id") Integer id);
+    Optional<Tutor> findById(@Param("id") int id);
     //根据老师姓名查询老师
     @Query("from Tutor  t where  t.name =:name")
     Optional<Tutor> findByName(@Param("name") String name);

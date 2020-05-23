@@ -17,7 +17,7 @@ public interface CoursesRepository extends BaseRepository<Courses,Integer> {
 
     //依据指定id查询课程
     @Query("from Courses c where c.id=:id")
-    Optional<Courses> findCoursesById(@Param("id") Integer id);
+    Optional<Courses> findCoursesById(@Param("id") int id);
 
     //依据课程名称查询课程
     @Query("from Courses c where c.courseName=:cname")
@@ -31,7 +31,7 @@ public interface CoursesRepository extends BaseRepository<Courses,Integer> {
     //基于id删除指定课程
     @Modifying
     @Query("delete from Courses c where c.id=:cid")
-    void deleteCoursesById(@Param("cid") Integer id);
+    void deleteCoursesById(@Param("cid") int id);
 
 
 

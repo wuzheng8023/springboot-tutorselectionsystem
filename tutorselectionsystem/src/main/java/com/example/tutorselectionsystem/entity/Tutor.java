@@ -21,7 +21,7 @@ public class Tutor {
 
     private String name;
     private Integer selectRange;//选择学生范围，例如前几名
-    private Integer numberOfStudentRequired;//需要多少学生
+    private Integer numberOfStudentRequired;//实际需要多少学生
     private String pwd;//后台权限验证密码
 
     @Column(columnDefinition = "timestamp default current_timestamp",
