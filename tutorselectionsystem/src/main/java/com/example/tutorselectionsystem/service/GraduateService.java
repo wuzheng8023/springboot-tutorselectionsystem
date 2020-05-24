@@ -1,13 +1,18 @@
 package com.example.tutorselectionsystem.service;
 
 import ch.qos.logback.core.joran.conditional.IfAction;
-import com.example.tutorselectionsystem.entity.Courses;
-import com.example.tutorselectionsystem.entity.Graduate;
-import com.example.tutorselectionsystem.entity.Transcript;
+import com.example.tutorselectionsystem.component.MyToken;
+import com.example.tutorselectionsystem.entity.*;
 import com.example.tutorselectionsystem.repository.GraduateRepository;
+import com.example.tutorselectionsystem.repository.UserRepository;
+import org.aspectj.bridge.MessageWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +29,12 @@ public class GraduateService {
 
     @Autowired
     private TranscriptService transcriptService;
+    @Autowired
+    private TutorService tutorService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 查询所有毕业生
@@ -40,8 +51,20 @@ public class GraduateService {
      * @param graduate
      * @return
      */
-    public Graduate addGraduate(Graduate graduate) {
-        return graduateRepository.save(graduate);
+    public Graduate addGraduate(Graduate graduate, int tid) {
+        User u = userService.getUser(graduate.getUser().getNumber());
+        if (u != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "当前学生已经存在");
+        }
+        Graduate newGraduate = new Graduate();
+        User newUser = new User();
+        newUser.setNumber(graduate.getUser().getNumber());
+        newUser.setPassword(passwordEncoder.encode(String.valueOf(graduate.getUser().getNumber())));
+        newUser.setRole(User.Role.STUDENT);
+        newGraduate.setUser(newUser);
+        newGraduate.setTutor(tutorService.getTutorByID(tid));
+        return graduateRepository.refresh(graduateRepository.save(newGraduate));
     }
 
     /**
@@ -97,7 +120,7 @@ public class GraduateService {
     }
 
     /**
-     * 讲排名记录在数据库中
+     * 将排名记录在数据库中
      */
     public void saveSortAllGraduateRanging() {
         List<Graduate> graduateList = sortAllGraduateRanging();
@@ -106,6 +129,13 @@ public class GraduateService {
         }
     }
 
+    public void deleteGraduateByNum(int num) {
+        graduateRepository.deleteByNum(num);
+    }
+
+    public Graduate getGraduateByNum(int num) {
+        return graduateRepository.findGraduateByNum(num).orElse(null);
+    }
 
     //非CRUD操作---------------------------------------
 
@@ -153,6 +183,54 @@ public class GraduateService {
         }
         return graduateList;
 //reversed()为降序，不添加则默认为升序
+    }
+
+    //在选择导师的时候，判断学生是否符合条件
+
+    /**
+     * 检查学生是否合格或者当前是否选择满了
+     *
+     * @param sid
+     * @return
+     */
+    public boolean checkQualification(int sid, int tid) {
+        Tutor tutor = tutorService.getTutorByID(tid);
+        if (tutor.getNumberOfStudentRequired() <= tutor.getGraduates().size()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "抱歉，当前老师可以指导的学生数量已经达到上限，请尽快联系其它的老师！"
+            );
+        }
+        List<Transcript> transcriptList = transcriptService.getAllByGraduateId(sid);
+
+        for (Transcript t : transcriptList) {
+            Courses c = t.getCourse();
+            if (t.getGrade() < c.getFloorGroad()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "您的" + c.getCourseName() + "课程成绩达不到课程要求最低要求"
+                                + c.getFloorGroad() + "分，请尽快联系其他老师！"
+                );
+            }
+        }
+        return true;
+    }
+
+//    学生符合条件后，且可以加入老师的队伍的时候，加入队伍
+    public void joinTeam(Graduate graduate){
+        tutorService.getTutorByID(MyToken.OwnID).getGraduates().add(graduate);
+    }
+
+    /**
+     * 得到最新学生排名，并且返回有序集合；
+     * @return
+     */
+    public List<Graduate> newRange(){
+        List<Graduate> graduateList = getAllGraduate();
+        for (Graduate g :graduateList){
+            g.setOverallScore(calculateOverallScore(g.getId()));
+            graduateRepository.save(g);
+        }
+        return sortAllGraduateRanging();
+
     }
 
 }

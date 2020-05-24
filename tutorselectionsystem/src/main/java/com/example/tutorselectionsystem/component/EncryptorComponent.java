@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 
-@Slf4j
 @Component
 public class EncryptorComponent {
 
@@ -25,28 +24,28 @@ public class EncryptorComponent {
     private String secretKey;
     @Value("${my.salt}")
     private String salt;
-
+    //文本加/解密工具
     @Autowired
-    private TextEncryptor encryptor;
+    private TextEncryptor textEncryptor;
 
+    //这里保证了单例，避免反复创建增加开销
     @Bean
     public TextEncryptor gettextEncryptor() {
         return Encryptors.text(secretKey, salt);
     }
 
-
     /**
-     *token加密
+     * token加密
      */
     public String encryptToken(MyToken token) {
 
         try {
             String json = objectMapper.writeValueAsString(token);
-            String t = encryptor.encrypt(json);
+            String t = textEncryptor.encrypt(json);
             return t;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "未登陆");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "服务器端发生错误");
         }
 
     }
@@ -57,32 +56,12 @@ public class EncryptorComponent {
     public MyToken decryptToken(String auth) {
 
         try {
-            String string = encryptor.decrypt(auth);
-          MyToken myToken= objectMapper.readValue(string, MyToken.class);
+            String string = textEncryptor.decrypt(auth);
+            MyToken myToken = objectMapper.readValue(string, MyToken.class);
             return myToken;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "未登陆");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "无权限");
         }
-    }
-
-    /**
-     * 密码加密
-     * @param pwd
-     * @return
-     */
-    public String encryptPwd(String pwd){
-
-        return encryptor.encrypt(pwd);
-    }
-
-    /**
-     * 密码解密
-     * @param pwd
-     * @return
-     */
-    public String decryptPwd(String pwd){
-
-        return encryptor.decrypt(pwd);
     }
 
 

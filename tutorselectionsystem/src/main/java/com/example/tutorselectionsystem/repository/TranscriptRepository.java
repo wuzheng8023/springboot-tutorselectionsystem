@@ -38,4 +38,9 @@ public interface TranscriptRepository extends BaseRepository<Transcript, Integer
     @Query("delete from Transcript t where t.course.id=:id")
     void deleteAllByCourseId(@Param("id") int id);
 
+    //删除指定idd的成绩项
+    @Modifying
+    @Query("delete from Transcript t where t.id=:id ")
+    void deleteTranscriptById(@Param("id") int id);
+
 }

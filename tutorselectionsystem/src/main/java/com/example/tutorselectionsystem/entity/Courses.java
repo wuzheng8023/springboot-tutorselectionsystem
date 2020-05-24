@@ -1,5 +1,6 @@
 package com.example.tutorselectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"transcripts"})
 public class Courses {  //课程类  strategy = GenerationType.IDENTITY
     //课程类
     @Id
@@ -33,6 +35,16 @@ public class Courses {  //课程类  strategy = GenerationType.IDENTITY
 
     @OneToMany(mappedBy = "course")
     private List<Transcript> transcripts;
+
+    @ManyToOne
+    private Tutor tutor;//教师类主键
+    /**
+     * 自己专门放id的构造函数
+     * * @param tid
+     */
+    public Courses(int tid) {
+        this.id = tid;
+    }
 
 }
 

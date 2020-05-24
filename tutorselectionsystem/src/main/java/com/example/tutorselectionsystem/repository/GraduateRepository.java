@@ -24,6 +24,13 @@ public interface GraduateRepository extends BaseRepository<Graduate, Integer> {
     @Query("from Graduate g where g.name=:name")
     Optional<List<Graduate>> findGraduateByName(@Param("name") String name);
 
+    //基于学号查找学生
+    @Query("from Graduate  g where g.user.number=:num")
+    Optional<Graduate> findGraduateByNum(@Param("num") int num);
+    //基于学号删除学生
+    @Modifying
+    @Query("delete from Graduate g where g.user.number=:num")
+    void deleteByNum(@Param("num") int num);
 
     //依据姓名删除学生
     @Modifying
@@ -34,8 +41,7 @@ public interface GraduateRepository extends BaseRepository<Graduate, Integer> {
     //依据id删除学生
     @Modifying
     @Query("delete from Graduate g where  g.id=:id")
-    void deleteById(@Param("id")Integer id);
-
+    void deleteById(@Param("id") Integer id);
 
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
 
 @Service
@@ -32,7 +33,7 @@ public class CourseSerivce {
      * @param id
      * @return
      */
-    public Courses getCoursesById(Integer id) {
+    public Courses getCoursesById(int id) {
         return coursesRepository.findCoursesById(id).orElse(null);
     }
 
@@ -66,10 +67,8 @@ public class CourseSerivce {
      * @return
      */
     public Courses addCourses(Courses courses) {
-        if (getCoursesById(courses.getId()) != null) {
-            return coursesRepository.save(courses);
-        }
-        return null;
+            return coursesRepository.refresh(coursesRepository.save(courses));
+
     }
 
     /**
@@ -86,7 +85,16 @@ public class CourseSerivce {
      *
      * @param id
      */
-    public void deleteCourseById(Integer id) {
+    public void deleteCourseById(int id) {
         coursesRepository.deleteCoursesById(id);
+    }
+
+    public Courses updateCourese(int cid,String cname,float weight,float floorGroad,int type){
+        Courses courses = coursesRepository.findCoursesById(cid).orElse(null);
+        courses.setCourseName(cname);
+        courses.setFloorGroad(floorGroad);
+        courses.setType(type);
+        courses.setWeight(weight);
+        return  courses;
     }
 }

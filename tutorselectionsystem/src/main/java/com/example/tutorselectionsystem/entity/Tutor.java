@@ -1,5 +1,6 @@
 package com.example.tutorselectionsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,16 +14,19 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"graduates", "courses"})
 public class Tutor {
     //导师类
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id ;
-
+    private Integer id;
     private String name;
     private Integer selectRange;//选择学生范围，例如前几名
     private Integer numberOfStudentRequired;//实际需要多少学生
-    private String pwd;//后台权限验证密码
+    //    private String pwd;//后台权限验证密码
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @MapsId
+    private User user;
 
     @Column(columnDefinition = "timestamp default current_timestamp",
             insertable = false,
@@ -34,12 +38,20 @@ public class Tutor {
             updatable = false)
     private LocalDateTime updateTime;
 
-    @OneToMany(mappedBy = "tutorname")
+    @Column(unique = true)
+    @OneToMany(mappedBy = "tutor")
     private List<Graduate> graduates;//已经拥有的学生
+    @Column(unique = true)
+    @OneToMany(mappedBy = "tutor")
+    private List<Courses> courses;//已经拥有的课程
 
-
-
-
+    /**
+     * 自己专门放id的构造函数
+     * * @param tid
+     */
+    public Tutor(int tid) {
+        this.id = tid;
+    }
 }
 //导师类（tutor）：
 //主键（uuid，UUID），姓名（name,String），已选学生列表(students，List<Student>)，
