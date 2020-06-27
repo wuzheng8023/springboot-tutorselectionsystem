@@ -1,6 +1,6 @@
 package com.example.tutorselectionsystem.repository;
 
-import com.example.tutorselectionsystem.entity.Graduate;
+
 import com.example.tutorselectionsystem.entity.Tutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
