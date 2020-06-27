@@ -28,6 +28,7 @@ public class Graduate {
     private Float overallScore;//依据各项成绩排序最终得到的综合成绩，用于排名使用
 //    private Integer pwd;//学生密码，默认初始化为学号
     private Integer ranking;//当前学生排名
+    private Integer graduateState;//0未报名，1报名成功，2报名失败；
 
     @Column(columnDefinition = "timestamp default current_timestamp",
             insertable = false,

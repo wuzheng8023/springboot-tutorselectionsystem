@@ -72,6 +72,13 @@ public class TutorController {
         graduateService.deleteById(graduate.getId());
     }
 
+    //更新学生实体
+    @PutMapping("updateStudent")
+    public Map updateStudent(@RequestBody Graduate graduate){
+    return Map.of("graduate",tutorService.updateGraduate(graduate));
+    }
+
+
     //添加成绩项
     @PostMapping("transcript")
     public Map postTranscript(@RequestBody Transcript transcript) {

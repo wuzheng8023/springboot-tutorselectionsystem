@@ -53,6 +53,7 @@ public class GraduateController {
         List<Transcript> transcriptList = graduate.getTranscripts();//放置方向
         if (graduateService.checkQualification(requestComponent.getUid(),MyToken.OwnID)){
            graduateService.joinTeam(graduate);
+            return Map.of("StudentState", graduate);
         }
             return Map.of("graduate", graduate);
     }

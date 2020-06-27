@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Iterator;
-import java.util.List;
+
 
 @Service
 @Transactional
@@ -47,6 +47,15 @@ public class TutorService {
         }
 
         return null;
+    }
+
+    /**
+     * 更新学生实体
+     * @param graduate
+     * @return
+     */
+    public Graduate updateGraduate(Graduate graduate){
+        return    graduateService.updateGraduate(graduate);
     }
 
     /**
@@ -102,6 +111,7 @@ public class TutorService {
             );
         }
         tutor.getGraduates().add(graduate);
+
         return tutor;
     }
 

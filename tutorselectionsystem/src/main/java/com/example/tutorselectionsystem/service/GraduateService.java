@@ -64,6 +64,7 @@ public class GraduateService {
         newUser.setRole(User.Role.STUDENT);
         newGraduate.setUser(newUser);
         newGraduate.setTutor(tutorService.getTutorByID(tid));
+        newGraduate.setGraduateState(0);//添加一名学生默认为未报名状态
         return graduateRepository.refresh(graduateRepository.save(newGraduate));
     }
 
@@ -103,6 +104,16 @@ public class GraduateService {
      */
     public List<Graduate> getByName(String name) {
         return graduateRepository.findGraduateByName(name).orElse(List.of());
+    }
+
+    /**
+     * 更新学生实体
+     * @param graduate
+     * @return
+     */
+    public Graduate updateGraduate(Graduate graduate){
+
+        return graduateRepository.save(graduate);
     }
 
     /**
