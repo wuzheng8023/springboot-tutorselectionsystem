@@ -28,10 +28,11 @@ public class InitComponent implements InitializingBean {
             User user1 = new User();
             user1.setRole(User.Role.TEACHER);
             user1.setNumber(num);
+            user1.setId(1);
             user1.setPassword(passwordEncoder.encode(String.valueOf(num)));
             Tutor tutor = new Tutor();
             tutor.setUser(user1);
-            tutor.setName("郝伟");
+            tutor.setName("张三");
             userService.addTutor(tutor);//级联操作，在持久化tutor之前，会自动持久化user,
         }
 

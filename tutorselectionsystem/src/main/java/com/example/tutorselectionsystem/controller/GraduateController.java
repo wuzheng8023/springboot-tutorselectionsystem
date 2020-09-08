@@ -13,7 +13,10 @@ import com.example.tutorselectionsystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.nio.channels.MulticastChannel;
 import java.util.List;
 import java.util.Map;
 
@@ -46,16 +49,17 @@ public class GraduateController {
                 "transcriptList", transcriptList,
                 "tutor", tutor);
     }
-//选择老师
+
+    //选择老师
     @PostMapping("select")
     public Map postSelect(@RequestBody Graduate graduate) {
         Graduate g = graduateService.getById(requestComponent.getUid());
         List<Transcript> transcriptList = graduate.getTranscripts();//放置方向
-        if (graduateService.checkQualification(requestComponent.getUid(),MyToken.OwnID)){
-           graduateService.joinTeam(graduate);
+        if (graduateService.checkQualification(requestComponent.getUid(), MyToken.OwnID)) {
+            graduateService.joinTeam(graduate);
             return Map.of("StudentState", graduate);
         }
-            return Map.of("graduate", graduate);
+        return Map.of("graduate", graduate);
     }
 
 }

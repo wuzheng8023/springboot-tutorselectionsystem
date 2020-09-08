@@ -43,7 +43,7 @@ public class Graduate {
     @ManyToOne
     private Tutor tutor;//导师姓名
 
-    @OneToMany(mappedBy = "graduate")
+    @OneToMany(mappedBy = "graduate" ,fetch = FetchType.LAZY)//2020.9.4新增加的fetch = FetchType.LAZY
     private List<Transcript> transcripts;//成绩表
 
     /**

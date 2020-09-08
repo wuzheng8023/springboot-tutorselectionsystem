@@ -14,7 +14,7 @@ public class MyToken {
     public static final String AUTHORIZATION = "authorization";
     public static final String UID = "uid";
     public static final String ROLE = "role";
-    public static final int OwnID = 2017214206;//记录了唯一的老师的num,方便全局使用
+    public static final int OwnID = 2017123456;//记录了唯一的老师的num,方便全局使用
     private Integer uid; //id
     private User.Role role; //角色身份
 }

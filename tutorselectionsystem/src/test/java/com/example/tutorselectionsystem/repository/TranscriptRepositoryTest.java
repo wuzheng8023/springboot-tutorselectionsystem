@@ -21,5 +21,6 @@ public class TranscriptRepositoryTest {
         Transcript transcript = new Transcript();
         transcript.setGrade(Float.valueOf(12));
         transcriptRepository.save(transcript);
+
     }
 }

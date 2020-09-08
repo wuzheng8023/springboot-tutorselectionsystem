@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class Courses {  //课程类  strategy = GenerationType.IDENTITY
             updatable = false)
     private LocalDateTime updateTime;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",fetch = FetchType.LAZY)////2020.9.4新增加的fetch = FetchType.LAZY
     private List<Transcript> transcripts;
 
     @ManyToOne

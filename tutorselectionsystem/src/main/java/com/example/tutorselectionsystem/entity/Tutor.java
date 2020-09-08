@@ -39,10 +39,10 @@ public class Tutor {
     private LocalDateTime updateTime;
 
     @Column(unique = true)
-    @OneToMany(mappedBy = "tutor")
+    @OneToMany(mappedBy = "tutor" ,fetch = FetchType.LAZY)//2020.9.4新增加的fetch = FetchType.LAZY
     private List<Graduate> graduates;//已经拥有的学生
     @Column(unique = true)
-    @OneToMany(mappedBy = "tutor")
+    @OneToMany(mappedBy = "tutor",fetch = FetchType.LAZY)//2020.9.4新增加的fetch = FetchType.LAZY
     private List<Courses> courses;//已经拥有的课程
 
     /**
