@@ -37,7 +37,7 @@ public class LoginController {
     @Autowired
     private EncryptorComponent encryptComponent;
 
-    @PostMapping("login")
+    @PostMapping("/login/")
     public Map login(@RequestBody User login, HttpServletResponse response) {
         User user = Optional.ofNullable(userService.getUser(login.getNumber()))
                 .filter(u -> passwordEncoder.matches(login.getPassword(), u.getPassword()))//正确执行
